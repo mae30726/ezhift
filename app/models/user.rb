@@ -9,5 +9,6 @@ class User < ApplicationRecord
   with_options presence: true do
     # ひらがな、カタカナ、漢字のみ許可する
     validates :name, format: {with: /\A[ぁ-んァ-ヶ一-龥々ー]+\z/, message: "is invalid. Input full-width characters."}
+    validates :email, unique: true
   end
 end
