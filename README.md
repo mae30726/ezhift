@@ -1,24 +1,70 @@
-# README
+# アプリケーション名
+## Ezhift
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+# アプリケーションの概要
+個人店舗や小規模の店舗へ向けた、シフト提出を一括管理するアプリです。
 
-Things you may want to cover:
+スタッフは、決められた期日までに、アプリを通して希望シフトを提出し、店長はそれをもとに、シフトを作成します。
 
-* Ruby version
+# URL
 
-* System dependencies
+# テスト用アカウント
+  ログイン機能等を実装した場合は、ログインに必要な情報を記述。
+  
+  またBasic認証等を設けている場合は、そのID/Passも記述すること。
 
-* Configuration
+# 利用方法
+### ＜スタッフ＞
+  まず、ユーザー登録をします。ログインするとカレンダーが表示され、入っていいるシフトが表示されます。
+  シフトを提出する際は、「シフトを提出する」ボタンを押し、翌月分の希望シフトを入力。
+  「提出する」ボタンを押すと、希望のシフトがカレンダーに反映されます。
+### ＜店長＞
+  管理者画面からログインし、提出されたシフトをもとに、シフトを作成します。
 
-* Database creation
+# 目指した課題解決
+**店長のシフト作成にかかる労力を削減し、業務の効率化を図りたい！**
 
-* Database initialization
+  私は前々職でコンビニ業に携わっていました。
 
-* How to run the test suite
+  店舗の店長は業務が忙しい中、紙で提出されたシフトをもとに、手書きでシフト表を作成し、業務負荷となっている様子を見てきました。
+  
+  そこで、シフトの提出からシフトの作成までを、アプリを用いて自動化し、店長にかかる業務負荷を減らしたい考え、このアプリを作成したいと思いました。
 
-* Services (job queues, cache servers, search engines, etc.)
+# 洗い出した要件
+スプレッドシートにまとめた要件定義を記述。
 
-* Deployment instructions
+# 実装した機能についての画像やGIFおよびその説明
+実装した機能について、それぞれどのような特徴があるのかを列挙する形で記述。画像はGyazoで、GIFはGyazoGIFで撮影すること。
 
-* ...
+# 実装予定の機能
+洗い出した要件の中から、今後実装予定の機能がある場合は、その機能を記述。
+  シフト印刷機能
+
+# データベース設計
+ER図等を添付。
+
+# ローカルでの動作方法
+git cloneしてから、ローカルで動作をさせるまでに必要なコマンドを記述。この時、アプリケーション開発に使用した環境を併記することを忘れないこと（パッケージやRubyのバージョンなど）。
+
+
+
+## users
+
+| Column     | Type   | Options                   |
+|------------|--------|---------------------------|
+| name       | string | null: false               |
+| email      | string | null: false, unique: true |
+| password   | string | null: false               |
+
+### Association
+has_many :shifts
+
+## shifts
+| Column     | Type       | Options           |
+|------------|------------|-------------------|
+| start_time | string     | null: false       |
+| end_time   | integer    | null: false       |
+| user       | references | foreign_key: true |
+
+### Association
+belongs_to :user

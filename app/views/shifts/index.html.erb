@@ -1,8 +1,32 @@
+<% require "date" 
+%>
+
+
 <% if user_signed_in? %>
   <%= current_user.name %>
   <%= link_to 'ログアウト', destroy_user_session_path, method: :delete %>
-<% else %>
-  <%= link_to '新規登録', new_user_registration_path %>
-  <%= link_to 'ログイン', new_user_session_path %>
+<%# <% else %>
+  <%# <%= link_to '新規登録', new_user_registration_path %>
+  <%# <%= link_to 'ログイン', new_user_session_path %>
 <% end %>
 <%= link_to 'シフトを提出する', new_shift_path %>
+
+<%= month_calendar events: @shifts do |date, shifts| %>
+  <%= date.day %>
+
+  <% shifts.each do |shift| %>
+    <div>
+      <%# link_to edit_shift_path(shift.id) do %>
+        <time id="start_time" class="shift_time">
+          <% str_s = shift.start_time %>
+          <%= str_s.strftime("%H:%M")%>
+        </time>
+          <%= "-" %>
+        <time id="end_time" class="shift_time">
+          <% str_e = shift.end_time  %>
+          <%= str_e.strftime("%H:%M")%>
+        </time>
+      <%# end %>
+    </div>
+  <% end %>
+<% end %>

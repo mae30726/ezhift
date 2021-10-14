@@ -1,1 +1,69 @@
-<p>シフト提出</p>
+<p>シフト提出フォーム</p>
+
+<%= form_with(model: @shift, loal: true) do |form| %>
+  <%# 繰り返したい %> 
+    <%= form.datetime_select :start_time, discard_year: true, minute_step: 30 %>
+    ~
+    <%= form.datetime_select :end_time , discard_year: true, minute_step: 30 %>
+  <%# /繰り返したい %>
+
+  <div>
+    <%= form.submit "提出する", class:"#" %>
+  </div>
+<% end %>
+
+<%= link_to "戻る", root_path %>
+
+<div></div>
+
+<%# 日付の処理%>
+  <% require 'date'
+  %>
+  <% require "active_support/time" 
+  %>
+
+  <% date = Date.today %>
+  
+  <% weeks = ["月","火","水","木","金","土","日"] %>
+  
+  <% index = date.strftime("%u").to_i %>
+  
+  <%# 次月初日 %>
+    <% first_day = date.beginning_of_month%>
+    <% beggining_of_next_month = first_day.next_month%>
+    <% index = beggining_of_next_month.strftime("%u").to_i %>
+    <% beggining_of_next_month.strftime("%-m/%-d (#{weeks[index - 1]})")%>
+  <%# /次月初日 %>
+
+  <%# 次月末日 %>
+    <% end_day = date.end_of_month%>
+    <% end_of_next_month = end_day.next_month%>
+    <% index = end_of_next_month.strftime("%u").to_i %>
+    <% end_of_next_month.strftime("%-m/%-d (#{weeks[index - 1]})")%>
+  <%# 次月末日 %>
+
+  <% day = beggining_of_next_month%>
+
+<%# /日付の処理%>
+
+
+
+
+<%= form_with model: @form, url:shifts_path, method: :post, loal: true do |form| %>
+  <%= form.fields_for :shifts do |field|%>
+    <div>
+      <%= field.datetime_select :start_time, discard_year: true, minute_step: 30, default: day %>
+      ▶
+      <%= field.datetime_select :end_time , discard_year: true, minute_step: 30, default: day %>
+    </div>
+    <% day = day.tomorrow %>
+  <% end %>
+
+  <div>
+    <%= form.submit "提出する", class:"#" %>
+  </div>
+<% end %>
+
+
+        <%# <% index = day.strftime("%u").to_i %>
+          <%# <% day.strftime("%-m/%-d (#{weeks[index - 1]})") %>
